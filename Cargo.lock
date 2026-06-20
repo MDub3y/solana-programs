@@ -3,6 +3,13 @@
 version = 4
 
 [[package]]
+name = "account-data-anchor"
+version = "0.1.0"
+dependencies = [
+ "anchor-lang",
+]
+
+[[package]]
 name = "account-data-native"
 version = "0.1.0"
 dependencies = [

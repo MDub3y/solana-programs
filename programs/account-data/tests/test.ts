@@ -83,14 +83,6 @@ async function runTest() {
 
     const fetchedAccount = svm.getAccount(addressInfoAccount.address as any);
     console.log("Fetch account: ", fetchedAccount);
-    /* if (fetchedAccount) {
-        console.log("\n✅ Account successfully initialized!");
-        console.log(`Owner: ${fetchedAccount.owner}`);
-        console.log(`Allocated Bytes: ${fetchedAccount.data.length}`);
-        console.log(`Lamport Balance: ${fetchedAccount.lamports}`);
-    } else {
-        console.error("❌ Failed to discover state account on chain.");
-    } */
 }
 
 runTest().catch(console.error);

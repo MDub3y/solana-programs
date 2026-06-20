@@ -3,7 +3,8 @@ members = [
     "programs/counter/anchor",
     "programs/counter/native",
     "programs/counter/pinocchio",
-    "programs/account-data/native"
+    "programs/account-data/native",
+    "programs/account-data/anchor",
 ]
 resolver = "2"
 
