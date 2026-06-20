@@ -11,6 +11,7 @@ import {
     lamports
 } from "@solana/web3.js";
 import * as crypto from "crypto";
+import path from "path";
 
 function getAnchorDiscriminator(prefix: string, name: string): Uint8Array {
     const hash = crypto.createHash("sha256").update(`${prefix}:${name}`).digest();
@@ -31,9 +32,9 @@ async function runBenchmark() {
 
     svm.airdrop(mockPayer.address as any, lamports(1_000_000_000n) as any);
 
-    svm.addProgramFromFile(nativeProgramId, "tests/fixtures/counter_native.so");
-    svm.addProgramFromFile(pinocchioProgramId, "tests/fixtures/counter_pinocchio.so");
-    svm.addProgramFromFile(anchorProgramId, "tests/fixtures/counter_anchor.so");
+    svm.addProgramFromFile(nativeProgramId, path.resolve(__dirname, "../../../target/deploy/counter_native.so"));
+    svm.addProgramFromFile(pinocchioProgramId, path.resolve(__dirname, "../../../target/deploy/counter_pinocchio.so"));
+    svm.addProgramFromFile(anchorProgramId, path.resolve(__dirname, "../../../target/deploy/counter_anchor.so"));
 
     const anchorAccountDisc = getAnchorDiscriminator("account", "Counter");
     const anchorIxDisc = getAnchorDiscriminator("global", "increment");
