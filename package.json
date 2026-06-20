@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "build": "cargo build-sbf",
+  "test:counter": "npx ts-node programs/counter/tests/test.ts"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",

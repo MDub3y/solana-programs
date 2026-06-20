@@ -3,6 +3,14 @@
 version = 4
 
 [[package]]
+name = "account-data-native"
+version = "0.1.0"
+dependencies = [
+ "borsh 1.7.0",
+ "solana-program",
+]
+
+[[package]]
 name = "ahash"
 version = "0.7.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
