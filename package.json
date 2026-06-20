@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
   "build": "cargo build-sbf",
-  "test:counter": "npx ts-node programs/counter/tests/test.ts"
+  "test:counter": "npx ts-node programs/counter/tests/test.ts",
+  "test:account-data": "npx ts-node programs/account-data/tests/test.ts"
 },
   "keywords": [],
   "author": "",
