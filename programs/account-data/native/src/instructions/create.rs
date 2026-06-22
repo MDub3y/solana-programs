@@ -39,7 +39,9 @@ pub fn create_address_info(
         ],
     )?;
 
-    address_info.serialize(&mut &mut address_info_account.data.borrow_mut()[..])?;
+    let mut address_mut = &mut address_info_account.data.borrow_mut()[..];
+
+    address_info.serialize(&mut address_mut)?;
 
     Ok(())
 }
