@@ -66,7 +66,13 @@ pub struct MintNft<'info> {
     )]
     pub nft_mint: Box<InterfaceAccount<'info, Mint>>,
 
-    #[account(mut)]
+    #[account(
+        init,
+        payer = authority,
+        associated_token::mint = nft_mint,
+        associated_token::authority = authority,
+        associated_token::token_program = token_program
+    )]
     pub token_account: Box<InterfaceAccount<'info, TokenAccount>>,
     pub token_program: Program<'info, Token2022>,
     pub system_program: Program<'info, System>,
