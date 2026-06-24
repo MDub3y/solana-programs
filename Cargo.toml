@@ -7,6 +7,7 @@ members = [
     "programs/account-data/anchor",
     "programs/account-data/pinocchio",
     "programs/checking-accounts/native",
+    "programs/nft/anchor",
 ]
 resolver = "2"
 
@@ -19,6 +20,7 @@ panic = "abort"
 [workspace.dependencies]
 solana-program = "1.18"
 anchor-lang = "0.30.1"
+anchor-spl = "0.30.1"
 pinocchio = "0.11.2"
 pinocchio_system = { version = "0.6.0", package = "pinocchio-system" }
 borsh = { version = "1.5.1", features = ["derive"] }
