@@ -1,12 +1,12 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{
+    associated_token::AssociatedToken,
     token_2022::Token2022,
     token_interface::{
         mint_to, token_metadata_initialize, Mint, MintTo, TokenAccount, TokenMetadataInitialize,
     },
 };
 
-/* declare_id!("NftAnchor1111111111111111111111111111111111"); */
 declare_id!("7mKHgy7WVZiZU29HcfovcLzzbcZsLoLDqJNbCksDa11L");
 
 #[program]
@@ -29,10 +29,34 @@ pub mod anchor_nft {
 
         let cpi_ctx = CpiContext::new(ctx.accounts.token_program.to_account_info(), cpi_accounts);
 
-        // 2. Initialize the dynamic metadata fields inside the mint account
+        // 1. Initialize metadata (Token-2022 expands the account allocation layout size here)
         token_metadata_initialize(cpi_ctx, name, symbol, uri)?;
 
-        // 3. Mint exactly 1 token to the user's token account
+        // 2. Dynamic Rent Top-Up System
+        let mint_account_info = ctx.accounts.nft_mint.to_account_info();
+        let rent = Rent::get()?;
+
+        // Read the freshly expanded data length directly from the validator's modified runtime memory state
+        let required_lamports = rent.minimum_balance(mint_account_info.data_len());
+        let current_lamports = mint_account_info.lamports();
+
+        if required_lamports > current_lamports {
+            let diff = required_lamports - current_lamports;
+
+            // Execute an inner system transfer to fund the expanded byte structure
+            anchor_lang::system_program::transfer(
+                CpiContext::new(
+                    ctx.accounts.system_program.to_account_info(),
+                    anchor_lang::system_program::Transfer {
+                        from: ctx.accounts.authority.to_account_info(),
+                        to: mint_account_info.clone(),
+                    },
+                ),
+                diff,
+            )?;
+        }
+
+        // 3. Mint token to user ATA
         mint_to(
             CpiContext::new(
                 ctx.accounts.token_program.to_account_info(),
@@ -71,9 +95,11 @@ pub struct MintNft<'info> {
         payer = authority,
         associated_token::mint = nft_mint,
         associated_token::authority = authority,
-        associated_token::token_program = token_program
+        associated_token::token_program = token_program,
     )]
     pub token_account: Box<InterfaceAccount<'info, TokenAccount>>,
+
     pub token_program: Program<'info, Token2022>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
     pub system_program: Program<'info, System>,
 }

@@ -1490,6 +1490,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "nft-pinocchio"
+version = "0.1.0"
+dependencies = [
+ "pinocchio",
+ "solana-program",
+]
+
+[[package]]
 name = "num-bigint"
 version = "0.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
