@@ -8,6 +8,7 @@ members = [
     "programs/account-data/pinocchio",
     "programs/checking-accounts/native",
     "programs/nft/anchor",
+    "programs/nft/native",
     "programs/nft/pinocchio",
 ]
 resolver = "2"

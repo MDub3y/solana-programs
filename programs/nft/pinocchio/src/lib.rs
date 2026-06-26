@@ -8,7 +8,6 @@ use pinocchio::{
     sysvars::{rent::Rent, Sysvar},
     AccountView, Address, ProgramResult,
 };
-use solana_program::{pubkey::Pubkey, system_program};
 
 program_entrypoint!(process_instruction);
 no_allocator!();

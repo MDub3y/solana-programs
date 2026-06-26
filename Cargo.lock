@@ -1490,6 +1490,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "nft-native"
+version = "0.1.0"
+dependencies = [
+ "borsh 1.7.0",
+ "solana-program",
+]
+
+[[package]]
 name = "nft-pinocchio"
 version = "0.1.0"
 dependencies = [
