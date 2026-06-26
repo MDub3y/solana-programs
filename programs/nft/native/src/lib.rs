@@ -1,5 +1,7 @@
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::entrypoint;
+use solana_program::program_error::ProgramError;
+use solana_program::rent::Rent;
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
     entrypoint::ProgramResult,
@@ -27,6 +29,19 @@ pub fn process_instruction(
     let token_program = next_account_info(account_info_iter)?;
     let associated_token_program = next_account_info(account_info_iter)?;
     let system_program = next_account_info(account_info_iter)?;
+
+    if instruction_data.len() < 8 {
+        return Err(ProgramError::InvalidInstructionData);
+    }
+    let args = MintNftArgs::try_from_slice(&instruction_data[8..])?;
+
+    let extension_types = [ExtensionType::MetadataPointer, ExtensionType::TokenMetadata];
+    let base_extension_len = ExtensionType::try_calculate_account_len::<Mint>(&extension_types)?;
+
+    let string_payload_len = 4 + args.name.len() + 4 + args.symbol.len() + 4 + args.uri.len();
+    let total_account_space = base_extension_len + string_payload_len;
+
+    let lamports_required = Rent::get()?.minimum_balance(total_account_space);
 
     Ok(())
 }

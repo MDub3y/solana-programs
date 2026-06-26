@@ -8,4 +8,7 @@ crate-type = ["cdylib", "lib"]
 
 [dependencies]
 solana-program = { workspace = true }
+spl-token-2022 = { workspace = true }
+spl-associated-token-account = { workspace = true }
+spl-token-metadata-interface = { workspace = true }
 borsh = { workspace = true }
