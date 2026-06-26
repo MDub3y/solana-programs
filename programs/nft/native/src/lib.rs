@@ -43,5 +43,81 @@ pub fn process_instruction(
 
     let lamports_required = Rent::get()?.minimum_balance(total_account_space);
 
+    // 1: CPI -> System Program: Create Mint Account with exact final size
+    invoke(
+        &system_instruction::create_account(
+            authority.key,
+            nft_mint.key,
+            lamports_required,
+            total_account_space as u64,
+            token_program.key,
+        ),
+        &[authority.clone(), nft_mint.clone(), system_program.clone()],
+    )?;
+
+    // 2: CPI -> Token-2022: Initialize Metadata Pointer Signpost Header
+    invoke(
+        &init_meta_ptr(
+            token_program.key,
+            nft_mint.key,
+            Some(*authority.key),
+            Some(*nft_mint.key),
+        )?,
+        &[nft_mint.clone()],
+    )?;
+
+    // 3: CPI -> Token-2022: Initialize 165-Byte Base Mint Properties
+    invoke(
+        &initialize_mint2(token_program.key, nft_mint.key, authority.key, None, 0)?,
+        &[nft_mint.clone()],
+    )?;
+
+    // 4: CPI -> Associated Token Program: Create Recipient Token Vault
+    invoke(
+        &create_associated_token_account(
+            authority.key,
+            authority.key,
+            nft_mint.key,
+            token_program.key,
+        ),
+        &[
+            authority.clone(),
+            token_account.clone(),
+            authority.clone(),
+            nft_mint.clone(),
+            system_program.clone(),
+            token_program.clone(),
+            associated_token_program.clone(),
+        ],
+    )?;
+
+    // 5: CPI -> Token-2022: Write Dynamic Metadata Strings into TLV Space
+    invoke(
+        &init_metadata(
+            token_program.key,
+            nft_mint.key,
+            authority.key,
+            nft_mint.key,
+            authority.key,
+            args.name,
+            args.symbol,
+            args.uri,
+        ),
+        &[nft_mint.clone(), authority.clone()],
+    )?;
+
+    // 6: CPI -> Token-2022: Mint exactly 1 Token to user wallet
+    invoke(
+        &mint_to(
+            token_program.key,
+            nft_mint.key,
+            token_account.key,
+            authority.key,
+            &[],
+            1,
+        )?,
+        &[nft_mint.clone(), token_account.clone(), authority.clone()],
+    )?;
+
     Ok(())
 }
