@@ -10,6 +10,7 @@ members = [
     "programs/nft/anchor",
     "programs/nft/native",
     "programs/nft/pinocchio",
+    "programs/governance/native",
 ]
 resolver = "2"
 
@@ -23,7 +24,7 @@ panic = "abort"
 solana-program = "1.18"
 spl-token-2022 = { version = "3.0.5", features = ["no-entrypoint"] }
 spl-associated-token-account = { version = "3.0.4", features = ["no-entrypoint"] }
-spl-token-metadata-interface = { version = "0.3.5", features = ["no-entrypoint"] }
+spl-token-metadata-interface = "0.3.5"
 anchor-lang = "0.30.1"
 anchor-spl = "0.30.1"
 pinocchio = "0.11.2"
