@@ -1,4 +1,5 @@
 use borsh::{BorshDeserialize, BorshSerialize};
+use solana_program::account_info::next_account_info;
 use solana_program::entrypoint;
 use solana_program::program_error::ProgramError;
 use solana_program::pubkey::Pubkey;
@@ -31,5 +32,33 @@ pub fn process_instruction(
         }
     }
 
+    Ok(())
+}
+
+fn process_cast_vote(
+    program_id: &Pubkey,
+    accounts: &[AccountInfo],
+    proposal_id: u64,
+    weight: u64,
+) -> ProgramResult {
+    let account_iter = &mut accounts.iter();
+    let voter = next_account_info(account_iter)?;
+    let proposal_state = next_account_info(account_iter)?;
+
+    // GUARD: Immediate ownership verification
+    // This protects against deferred validation bypass vulnerabilities
+    if proposal_state.owner != program_id {
+        return Err(ProgramError::IncorrectProgramId);
+    }
+
+    if !voter.is_signer {
+        return Err(ProgramError::MissingRequiredSignature);
+    }
+
+    solana_program::msg!(
+        "Vote verified for proposal {}: weight {}",
+        proposal_id,
+        weight
+    );
     Ok(())
 }
