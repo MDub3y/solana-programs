@@ -1,6 +1,7 @@
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::entrypoint;
 use solana_program::program_error::ProgramError;
+use solana_program::pubkey::Pubkey;
 use solana_program::{account_info::AccountInfo, entrypoint::ProgramResult};
 
 #[derive(BorshDeserialize, BorshSerialize)]
@@ -12,7 +13,7 @@ pub enum GovernanceInstruction {
 entrypoint!(process_instruction);
 
 pub fn process_instruction(
-    program_id: &Address,
+    program_id: &Pubkey,
     accounts: &[AccountInfo],
     instruction_data: &[u8],
 ) -> ProgramResult {
