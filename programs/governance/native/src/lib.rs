@@ -33,8 +33,6 @@ pub fn process_instruction(
             process_reclaim_surplus_sol(program_id, accounts, bump)
         }
     }
-
-    Ok(())
 }
 
 fn process_cast_vote(
