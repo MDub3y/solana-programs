@@ -84,7 +84,6 @@ fn process_reclaim_surplus_sol(
 
     solana_program::msg!("Assembling low-level WithdrawExcessLamports parameters...");
 
-    // 💡 Bypassing high-level dependencies by crafting the exact byte instruction layout
     // Discriminator for WithdrawExcessLamports is 38
     let mut instruction_data = [0u8; 1];
     instruction_data[0] = 38;
@@ -94,7 +93,7 @@ fn process_reclaim_surplus_sol(
         accounts: vec![
             AccountMeta::new(*stranded_source.key, false),
             AccountMeta::new(*destination_wallet.key, false),
-            AccountMeta::new_readonly(*treasury_pda.key, true), // The PDA acts as the signer
+            AccountMeta::new_readonly(*treasury_pda.key, true),
         ],
         data: instruction_data.to_vec(),
     };
