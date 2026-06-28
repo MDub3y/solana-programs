@@ -1213,6 +1213,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "governance-pinocchio"
+version = "0.1.0"
+dependencies = [
+ "pinocchio",
+ "solana-program",
+]
+
+[[package]]
 name = "hashbrown"
 version = "0.11.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"

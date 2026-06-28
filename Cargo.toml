@@ -12,6 +12,7 @@ members = [
     "programs/nft/pinocchio",
     "programs/governance/native",
     "programs/governance/anchor",
+    "programs/governance/pinocchio",
 ]
 resolver = "2"
 
