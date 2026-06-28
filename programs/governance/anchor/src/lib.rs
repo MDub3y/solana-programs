@@ -31,3 +31,24 @@ pub struct CastVote<'info> {
 
     pub system_program: Program<'info, System>,
 }
+
+#[derive(Accounts)]
+pub struct ReclaimSurplusSol<'info> {
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    #[account(
+        seeds = [b"treasury_vault"],
+        bump,
+    )]
+    pub treasury_pda: UncheckedAccount<'info>,
+
+    #[account(mut)]
+    pub stranded_source: UncheckedAccount<'info>,
+
+    #[account(mut)]
+    pub destination_wallet: UncheckedAccount<'info>,
+
+    pub token_2022_program: Program<'info, Token2022>,
+    pub system_program: Program<'info, System>,
+}
